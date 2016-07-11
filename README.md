@@ -17,14 +17,14 @@
 
   The medianDegreeList holds the degree of each vertex. For each addition/deletion of edges in the graph, 
   the degree of corresponding vertex is removed from the medianDegreeList, updated with the modified degree
-  and inserted into the right place in the medianDegreeList. Vertex with degree zero are removed as it implies
-  the edge has been removed.
+  and inserted into the right place in the medianDegreeList. Vertices with degree zero are removed as it 
+  implies the edge has been removed.
 
   The median is calculated and printed.
 
   Each component was individually unit-tested using JUnit.
    
-  Similarly, Integration testing of the project was done using JUnit, with test cases covering all scenarios.
+  Similarly, integration testing of the project was done using JUnit, with test cases covering all scenarios.
  
   Converted JUnit testcases to tests in the insight_testsuite/tests folder. Each test is added as a separate 
   folder with a venmo_input folder for venmo-trans.txt and venmo_output folder for output.txt.
