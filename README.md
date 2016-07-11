@@ -1,3 +1,35 @@
+# Solution
+
+ // This holds the latest timestamp transaction that is being processed, init to 0.
+  private long maxTimeStamp = 0;
+  
+
+  When a payment is received, the payment timestamp is compared with the the maxTimeStamp, which is the
+  most recently processed payment. If the payment timestamp is older than 60 secs of maxTimestamp, 
+  we return from the payment procesing system and print the median. If the payment timestamp is within 
+  60 secs or greater than the maxTimestamp we continue processing the payment.
+
+  For a payment between an actor and target, two entries are created in the edgeMap, one for actor
+  and one for target each having an edge to the other. 
+  
+  If there are multiple payments between same actor/target, the timestamp in the GraphEdge
+  is updated to the most recent payment timestamp, no new edges are added.
+
+  Each payment is added into the createdPriorityQueue. After that all payments older than 60 secs 
+  of the maxTimeStamp are deleted from the createdPriorityQueue. This will result in the degree
+  of the vertices getting modified.
+
+  The medianDegreeList holds the degree of each vertex. For each addition/deletion of edges in the graph, 
+  the degree of corresponding vertex is removed from the medianDegreeList, updated with the modified degree
+  and inserted into the right place in the medianDegreeList.
+
+  The median is calculated and printed.
+
+  Each component was individually unit-tested using JUnit.
+   
+  Integration testing of the project using JUnit with test cases covering all scenarios. 
+
+# Problem Description
 # Table of Contents
 
 1. [Challenge Summary] (README.md#challenge-summary)
