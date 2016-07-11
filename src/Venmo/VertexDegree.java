@@ -1,5 +1,7 @@
 package Venmo;
 
+//This class represents the degree of a vertex in a graph.
+
 public class VertexDegree {
 	private int degree;
 	private String actor;

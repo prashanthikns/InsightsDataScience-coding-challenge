@@ -1,5 +1,7 @@
 package Venmo;
-
+/* This class is used to define the objects in medianDegreeList.
+ * It is ordered by the degree of the node.
+ */
 public class VertexDegree {
 	private int degree;
 	private String actor;

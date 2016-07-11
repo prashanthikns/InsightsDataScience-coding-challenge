@@ -1,5 +1,7 @@
 package Venmo;
 
+// This class represents the edge of the user relationship graph.  
+
 public class GraphEdge {
 	private String target;
 	private long   createdTime;

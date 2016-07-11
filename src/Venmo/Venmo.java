@@ -23,13 +23,30 @@ public class Venmo {
   // This holds the latest timestamp transaction that is being processed, init to 0.
   private long maxTimeStamp = 0;
   
-  /* */
+  // edgeMap is the graph of user relationships. The graph is implemented as a adjacency list of vertices.
+  // Each vertex is an actor/target and the associated ArrayList is a list of all user relationships.
+  //
+  // For a payment between an actor and target, two entries are created in the edgeMap, one for actor
+  // and one for target each having an edge to the other.
+  //
+  // If there are multiple payments between same actor/target, the timestamp in the GraphEdge
+  // reflects the most recent payment timestamp.
   private HashMap<String, ArrayList<GraphEdge>> edgeMap = new HashMap<String, ArrayList<GraphEdge>>();
   
-  private PriorityQueue<Transaction> createdPriorityQueue = new PriorityQueue<Transaction>();
-  
+  // medianDegreeList stores the degree of each vertex in the user relationship graph.
+  //
+  // This data structure is ordered by degree and updated whenever the graph is modified with addition
+  // or deletion of edges.
   private ArrayList<VertexDegree> medianDegreeList = new ArrayList<VertexDegree>();
 
+  // createdPriorityQueue is a min-heap of the payments ordered by the created timestamp.
+  //
+  // For each payment received within 60 secs of most recent processed timestamp, 
+  // an entry is added into the createdPriorityQueue.
+  //
+  // This helps to evicts edges from the edgeMap and medianDegreeList when a payment is received.
+  private PriorityQueue<Transaction> createdPriorityQueue = new PriorityQueue<Transaction>();
+  
   private final int timeThreshold = 60 * 1000;
 
   public void insertTransaction(Transaction t) {
@@ -86,6 +103,23 @@ public class Venmo {
       updateMedianDegreeList(modifiedVertex);
     }
   }
+
+  // Public method to get the current median.
+  public float getMedian() {
+    float median;
+    int numVertices = medianDegreeList.size();
+    // Even number of vertices
+    if (numVertices %2 == 0) {
+      int medianIdx1 = numVertices/2;
+      int medianIdx2 = medianIdx1 - 1;
+      median = ((float)medianDegreeList.get(medianIdx1).getDegree() +
+                (float)medianDegreeList.get(medianIdx2).getDegree())/2;
+    } else {
+      int medianIdx = numVertices/2;
+      median = (float)medianDegreeList.get(medianIdx).getDegree();
+    }
+    return median;
+  }
   
   // Private method to add an edge to the graph from 'vertexFrom' to 'vertexTo'
   private void addEdgeToGraph(String vertexFrom, String vertexTo, long createdTime) {
@@ -112,6 +146,7 @@ public class Venmo {
     }
   }
   
+  // Private method to delete an edge in the graph from 'vertexFrom' to 'vertexTo'
   private void DeleteEdgeFromGraph(String vertexFrom, String vertexTo, long createdTime, 
                    HashMap<String, Integer> modifiedVertexMap) {
     ArrayList<GraphEdge> edgeList;
@@ -134,6 +169,9 @@ public class Venmo {
     }
   }
   
+  // Private method to update medianDegreeList with the new degree for the vertex.
+  // vertex.getDegree() of zero means that the vertex is removed from the graph and 
+  // thereby needs to be removed from the median list too.
   private void updateMedianDegreeList(VertexDegree vertex) {
     // Check if this vertex exists in the median degree list, remove the vertex with
     // the old degree and add it back at the right position based on the new degree.
@@ -160,22 +198,6 @@ public class Venmo {
       }
     }
     medianDegreeList.add(medianDegreeList.size(), vertex);
-  }
-  
-  public float getMedian() {
-    float median;
-    int numVertices = medianDegreeList.size();
-    // Even number of vertices
-    if (numVertices %2 == 0) {
-      int medianIdx1 = numVertices/2;
-      int medianIdx2 = medianIdx1 - 1;
-      median = ((float)medianDegreeList.get(medianIdx1).getDegree() +
-                (float)medianDegreeList.get(medianIdx2).getDegree())/2;
-    } else {
-      int medianIdx = numVertices/2;
-      median = (float)medianDegreeList.get(medianIdx).getDegree();
-    }
-    return median;
   }
   
   void printVenmo() {

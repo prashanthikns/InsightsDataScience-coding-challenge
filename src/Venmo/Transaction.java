@@ -1,5 +1,7 @@
 package Venmo;
 
+// This class represents a payment between actor and target.
+
 public class Transaction implements Comparable<Transaction> {
   private long createdTime;
   private String actor;

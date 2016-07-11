@@ -23,11 +23,13 @@ public class Venmo {
   // This holds the latest timestamp transaction that is being processed, init to 0.
   private long maxTimeStamp = 0;
   
-  /* */
+  // HashMap of Actor --> ArrayList of {Target, createdTime}
   private HashMap<String, ArrayList<GraphEdge>> edgeMap = new HashMap<String, ArrayList<GraphEdge>>();
   
+  //Priority Queue ordering on the timestamp.
   private PriorityQueue<Transaction> createdPriorityQueue = new PriorityQueue<Transaction>();
   
+  //ArrayList of the medians.
   private ArrayList<VertexDegree> medianDegreeList = new ArrayList<VertexDegree>();
 
   private final int timeThreshold = 60 * 1000;

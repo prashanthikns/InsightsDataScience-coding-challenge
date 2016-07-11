@@ -1,5 +1,8 @@
 package Venmo;
 
+/* This class is define the fields of the transaction.
+ * This is used by the priority queue to maintain ordering on the timestamp.
+ */
 public class Transaction implements Comparable<Transaction> {
   private long createdTime;
   private String actor;

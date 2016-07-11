@@ -1,5 +1,8 @@
 package Venmo;
 
+/* This class is to define the edge of the transaction.  
+ * This is used to make a mapping of all edges out of a vertex.
+ */
 public class GraphEdge {
 	private String target;
 	private long   createdTime;
