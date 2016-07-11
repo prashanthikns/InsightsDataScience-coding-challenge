@@ -1,9 +1,5 @@
 # Solution
 
- // This holds the latest timestamp transaction that is being processed, init to 0.
-  private long maxTimeStamp = 0;
-  
-
   When a payment is received, the payment timestamp is compared with the the maxTimeStamp, which is the
   most recently processed payment. If the payment timestamp is older than 60 secs of maxTimestamp, 
   we return from the payment procesing system and print the median. If the payment timestamp is within 
